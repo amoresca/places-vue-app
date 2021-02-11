@@ -8,6 +8,10 @@
       <label for="">Address: </label><input type="text" v-model="newAddress" />
     </div>
     <button v-on:click="createPlace()">Add Place</button>
+    <div class="errors" v-for="error in newErrors" :key="error">
+      <p>{{ error }}</p>
+    </div>
+
     <hr />
     <div v-for="place in places" :key="place.id">
       <h2>{{ place.name }}</h2>
@@ -42,6 +46,9 @@ label {
   text-align: left;
   display: inline-block;
 }
+.errors {
+  color: red;
+}
 .close {
   position: absolute;
   top: 0;
@@ -61,6 +68,7 @@ export default {
       places: [],
       newName: "",
       newAddress: "",
+      newErrors: [],
       currentPlace: {},
     };
   },
@@ -85,6 +93,7 @@ export default {
         })
         .catch((error) => {
           console.log(error.response.data.errors);
+          this.newErrors = error.response.data.errors;
         });
     },
     showPlace: function(place) {
